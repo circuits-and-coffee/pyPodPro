@@ -16,11 +16,16 @@ Hopefully...
 - Wirelessly charge (although probably not)
 
 ## How will you do this?
-Great question ;) For now, I'm planning on using:
+Great question 😉 For now, I'm planning on using:
 - Python with pyGame for the UI
 - Armbian for the OS
 - PocketBeagle 2 or Raspberry Pi CM4 for the SBC
 - Some kind of daughterboard/cape to enable networking, expandable storage, and basically everything else.
 
 ## When will it do all of that?
-Likely a long time from now, this is just for my own education :)
+Likely a long time from now, this is just for my own education 😊
+
+## how do I contribute?
+1) Git clone https://github.com/ntfrueh/pyPodPro.git
+2) uv venv                      # Create virtual environment
+3) uv run gui/app/main.py       # Run the GUI program
