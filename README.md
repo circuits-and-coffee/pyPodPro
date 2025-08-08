@@ -1,7 +1,7 @@
 pyPodPro (Python iPod Pro)
 
 ## What is it?
-My basic attempt to create a next-gen iPod through the use of a  SBC (like the PocketBeagle 2) crammed into an old iPod chassis.
+My basic attempt to create a next-gen iPod through the use of a  SBC crammed into an old iPod chassis.
 
 ## What will it do?
 Hopefully...
@@ -19,7 +19,7 @@ Hopefully...
 Great question ;) For now, I'm planning on using:
 - Python with pyGame for the UI
 - Armbian for the OS
-- PocketBeagle 2 for the SBC
+- PocketBeagle 2 or Raspberry Pi CM4 for the SBC
 - Some kind of daughterboard/cape to enable networking, expandable storage, and basically everything else.
 
 ## When will it do all of that?
