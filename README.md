@@ -1,7 +1,7 @@
 ### pyPodPro (Python iPod Pro)
 
 ## What is it?
-My basic attempt to create a next-gen iPod through the use of a  SBC crammed into an old iPod chassis.
+My basic attempt to create a next-gen iPod through the use of a SBC crammed into an old iPod chassis.
 
 ## What will it do?
 Hopefully...
