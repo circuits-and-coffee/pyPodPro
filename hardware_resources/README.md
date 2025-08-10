@@ -1,5 +1,7 @@
 # Hardware and Platform
-TODO: Clean this section up so it's not just a link dump
+This section will contain resources for PCB design (in case you want to dive into the world of custom capes and hats), wiring schematics, and whatnot.
+
+(TODO: Clean this section up so it's not just a link dump)
 
 ## PocketBeagle 2 Route
 https://www.digikey.com/en/product-highlight/b/beagleboard/pocketbeagle-2
