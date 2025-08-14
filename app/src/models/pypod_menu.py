@@ -2,6 +2,9 @@ import sys, random
 import pygame, pygame_menu
 from pygame_menu.menu import Menu
 from pygame_menu.widgets.core.selection import Selection
+from time import strftime
+import datetime
+from pygame_menu.widgets import Frame, Label
 
 class NoWrapMenu(Menu):
     def _select(
@@ -12,26 +15,23 @@ class NoWrapMenu(Menu):
         apply_sound: bool = True,
         **kwargs
     ) -> 'Menu':
+        # Disable wrap-around: ignore out-of-bounds selects
         if 0 <= index < len(self._widgets):
             return super()._select(index, update_surface, event, apply_sound, **kwargs)
         return self
 
 class pypod_menu(NoWrapMenu):
    
-    def __init__(self, elements):
+    def __init__(self, elements):        
         # Inherit from THEME_BLUE
         pypod_theme = pygame_menu.themes.THEME_BLUE.copy()
         
         # Customize to our heart's content!
-        pypod_theme.title_bar_style = pygame_menu.widgets.MENUBAR_STYLE_UNDERLINE
-        pypod_theme.title_bar_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
-        pypod_theme.title_font_antialias = True
-        pypod_theme.title_font_color = (0, 0, 0, 255)
-        pypod_theme.title_font_shadow = False
-        pypod_theme.title_font_size = 16
+        pypod_theme.title = False
+        pypod_theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
         pypod_theme.widget_font_size = 16
-        pypod_theme.widget_alignment = pygame_menu.locals.ALIGN_LEFT
         pypod_theme.widget_font_color = (0,0,0,255)
+        pypod_theme.widget_alignment = pygame_menu.locals.ALIGN_LEFT
         
         # Custom selection code (simpler, not as true to the original iPod UI)
         effect = pygame_menu.widgets.HighlightSelection(border_width=0, margin_x=10, margin_y=0)
@@ -48,19 +48,55 @@ class pypod_menu(NoWrapMenu):
         # )
         pypod_theme.selection_color = (255,255,255)
 
+        super().__init__('pyPodPro', 320,240,
+                        theme=pypod_theme,
+                        center_content=False
+        )
         
-        pypod_theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
-        
-        super().__init__('pyPodPro', 320,240,theme=pypod_theme, center_content=False)
         self.wrap_around = False
         self._theme.widget_alignment = pygame_menu.locals.ALIGN_LEFT
 
-        # Spacer
-        self.add.label('', selectable=False)
+        # # Create custom title bar
+        # title_frame = self.add.frame_h(320,80)
+        # title_frame.set_float(False)
+        # title_label = self.add.label('pyPodPro', selectable=False)
+        # clock = self.add.clock(font_size=12,
+        #                        font_name=pygame_menu.font.FONT_OPEN_SANS_LIGHT,
+        #                        clock_format = '%I:%M:%p')
+        # # Pack them into the attached frame (one widget per pack)
+        # title_frame.pack(title_label)
+        # # spacer = self.add.label('', selectable=False)  # Acts as a flexible spacer
+        # # spacer.set_max_width(320)  # Ensure the spacer fills the width
+        # # title_frame.pack(spacer)
+        # title_frame.pack(clock)
+        
+        spacer_bg = self.add.label(
+            '', 
+            selectable=False,
+            background_color=(0,232,233)            
+        )
+        spacer_bg.set_max_width(320)
+        spacer_bg.set_max_height(50)
+        spacer_bg.resize(320, 20)  # width=320px, height=20px
+
+
+        # Create floating title and clock
+        title_label = self.add.label('pyPodPro', selectable=False, font_size=12)
+        title_label.set_float()
+
+        clock = self.add.clock(
+            font_size=12,
+            font_name=pygame_menu.font.FONT_OPEN_SANS_LIGHT,
+            clock_format='%I:%M:%p'
+        )
+        clock.set_float()
+        clock.translate(240, 0)  # Position from right edge
         
         # Populate the menu items
         for label, destination in elements.items():
             self.add.button(label, destination)
+            
+        
             
 # This is needed if you want an "iPod-esque" highlight style
 class HalfRowSelection(Selection):
