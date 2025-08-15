@@ -1,132 +1,140 @@
-import sys, random
-import pygame, pygame_menu
-from pygame_menu.menu import Menu
-from pygame_menu.widgets.core.selection import Selection
-from time import strftime
+import tkinter as tk
+from tkinter import ttk, messagebox
 import datetime
-from pygame_menu.widgets import Frame, Label
 
-class NoWrapMenu(Menu):
-    def _select(
-        self,
-        index: int,
-        update_surface: int = 1,
-        event: str = '',
-        apply_sound: bool = True,
-        **kwargs
-    ) -> 'Menu':
-        # Disable wrap-around: ignore out-of-bounds selects
-        if 0 <= index < len(self._widgets):
-            return super()._select(index, update_surface, event, apply_sound, **kwargs)
-        return self
+class TkPodMenuApp:
+    """Nested iPod-style menu implemented with Tkinter.
+    - Expects a nested dict structure (labels -> dict or callable or None).
+    - Fixed header with title (left) and clock (right).
+    - Listbox-driven navigation with a back stack.
+    """
 
-class pypod_menu(NoWrapMenu):
-   
-    def __init__(self, elements):        
-        # Inherit from THEME_BLUE
-        pypod_theme = pygame_menu.themes.THEME_BLUE.copy()
-        
-        # Customize to our heart's content!
-        pypod_theme.title = False
-        pypod_theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
-        pypod_theme.widget_font_size = 16
-        pypod_theme.widget_font_color = (0,0,0,255)
-        pypod_theme.widget_alignment = pygame_menu.locals.ALIGN_LEFT
-        
-        # Custom selection code (simpler, not as true to the original iPod UI)
-        effect = pygame_menu.widgets.HighlightSelection(border_width=0, margin_x=10, margin_y=0)
-        effect.set_background_color((69, 181, 238, 255))
-        pypod_theme.widget_selection_effect = effect
-                
-        # Custom selection code (uses draw, which requires some level of transparency)
-        # pypod_theme.widget_selection_effect = HalfRowSelection(
-        #     fill=(69, 181, 238, 255),
-        #     border_width=0,
-        #     width_factor=0.5,
-        #     left_padding=0.5,
-        #     margin_y=1
-        # )
-        pypod_theme.selection_color = (255,255,255)
+    def __init__(self, root: tk.Tk, structure: dict, *, window_title: str = 'pyPodPro'):
+        self.root = root
+        self.structure = structure
+        self.stack = []  # list[(title, node_dict)] for back navigation
 
-        super().__init__('pyPodPro', 320,240,
-                        theme=pypod_theme,
-                        center_content=False
+        # Window
+        self.root.title(window_title)
+        self.root.geometry('320x240')
+        self.root.resizable(False, False)
+
+        # --- Header ---------------------------------------------------------
+        self.header = tk.Frame(self.root, bg='white')
+        self.header.pack(fill=tk.X)
+
+        self.title_var = tk.StringVar(value='pyPodPro')
+        self.title_lbl = tk.Label(self.header, textvariable=self.title_var, fg='black',bg='white', font=('Helvetica', 12))
+        self.title_lbl.pack(side=tk.LEFT, padx=8, pady=4)
+
+        self.clock_var = tk.StringVar()
+        self.clock_lbl = tk.Label(self.header, textvariable=self.clock_var, fg='black',bg='white', font=('Helvetica', 12))
+        self.clock_lbl.pack(side=tk.RIGHT, padx=8)
+        self._tick_clock()
+
+        ttk.Separator(self.root, orient=tk.HORIZONTAL).pack(fill=tk.X)
+
+        # --- Content --------------------------------------------------------
+        content = tk.Frame(self.root, bg='white')
+        content.pack(fill=tk.BOTH, expand=True)
+
+        list_frame = tk.Frame(content, bg='white')
+        list_frame.pack(fill=tk.BOTH, expand=True, padx=8, pady=6)
+
+        self.scrollbar = tk.Scrollbar(list_frame, orient=tk.VERTICAL)
+        self.listbox = tk.Listbox(
+            list_frame,
+            yscrollcommand=self.scrollbar.set,
+            activestyle='none',
+            highlightthickness=0,
+            selectmode=tk.SINGLE,fg='black',bg='white',
+            font=('Helvetica', 12),
+            borderwidth=0
         )
-        
-        self.wrap_around = False
-        self._theme.widget_alignment = pygame_menu.locals.ALIGN_LEFT
+        self.scrollbar.config(command=self.listbox.yview)
+        self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.listbox.focus_set()
 
-        # # Create custom title bar
-        # title_frame = self.add.frame_h(320,80)
-        # title_frame.set_float(False)
-        # title_label = self.add.label('pyPodPro', selectable=False)
-        # clock = self.add.clock(font_size=12,
-        #                        font_name=pygame_menu.font.FONT_OPEN_SANS_LIGHT,
-        #                        clock_format = '%I:%M:%p')
-        # # Pack them into the attached frame (one widget per pack)
-        # title_frame.pack(title_label)
-        # # spacer = self.add.label('', selectable=False)  # Acts as a flexible spacer
-        # # spacer.set_max_width(320)  # Ensure the spacer fills the width
-        # # title_frame.pack(spacer)
-        # title_frame.pack(clock)
-        
-        spacer_bg = self.add.label(
-            '', 
-            selectable=False,
-            background_color=(0,232,233)            
-        )
-        spacer_bg.set_max_width(320)
-        spacer_bg.set_max_height(50)
-        spacer_bg.resize(320, 20)  # width=320px, height=20px
+        # Bind interactions
+        # self.listbox.bind('<Double-Button-1>', self._activate_selected)
+        self.listbox.bind('<Return>', self._activate_selected)
+        self.listbox.bind('<Escape>', lambda e: self.go_back())
+        self.listbox.bind('<Up>', self.on_arrow_up)
+        self.listbox.bind('<Down>', self.on_arrow_down)
 
+        # Start at root
+        self.show_node('Main', self.structure)
 
-        # Create floating title and clock
-        title_label = self.add.label('pyPodPro', selectable=False, font_size=12)
-        title_label.set_float()
+    # --------------------------- Clock -------------------------------------
+    def _tick_clock(self):
+        self.clock_var.set(datetime.datetime.now().strftime('%I:%M %p').lstrip('0'))
+        self.root.after(1000, self._tick_clock)
 
-        clock = self.add.clock(
-            font_size=12,
-            font_name=pygame_menu.font.FONT_OPEN_SANS_LIGHT,
-            clock_format='%I:%M:%p'
-        )
-        clock.set_float()
-        clock.translate(240, 0)  # Position from right edge
-        
-        # Populate the menu items
-        for label, destination in elements.items():
-            self.add.button(label, destination)
-            
-        
-            
-# This is needed if you want an "iPod-esque" highlight style
-class HalfRowSelection(Selection):
-    def __init__(self, fill=(69,181,238,80), border=(0, 40, 180), border_width=0,
-                 width_factor=0.5, left_padding=0, margin_y=1):
-        super().__init__(margin_left=0, margin_right=0, margin_top=margin_y, margin_bottom=margin_y)
-        self.fill = fill
-        self.border = border
-        self.border_width = border_width
-        self.width_factor = width_factor
-        self.left_padding = left_padding
+    # ----------------------- Navigation helpers ----------------------------
+    def show_node(self, title: str, node: dict):
+        self.title_var.set(title)
+        self._current_title = title
+        self._current_node = node
 
-    def draw(self, surface: pygame.Surface, widget: pygame_menu.widgets.Widget) -> None:
-        menu = widget.get_menu()
+        # Populate list
+        self.listbox.delete(0, tk.END)
+        for label in node.keys():
+            self.listbox.insert(tk.END, label)
+        if node:
+            self.listbox.selection_set(0)
+            # ensure keyboard focus + visible active row
+            self.listbox.activate(0)
+            self.listbox.see(0)
+            self.listbox.focus_set()
 
-        # Height = widget height + selection margins
-        row_h = widget.get_height() + self.margin_top + self.margin_bottom
+    def go_back(self):
+        if not self.stack:
+            return
+        title, node = self.stack.pop()
+        self.show_node(title, node)
 
-        # Width = fraction of the *inner* menu width (excludes menubar/scrollbars)
-        row_w = int(menu.get_width(inner=True) * self.width_factor)
+    def on_arrow_up(self, event):
+        curselection = self.listbox.curselection()
+        if curselection[0] > 0:
+            self.listbox.selection_clear(curselection[0])
+            self.listbox.selection_set(curselection[0] - 1)
+            self.listbox.activate(curselection[0] - 1)
+  
+    def on_arrow_down(self, event):
+        curselection = self.listbox.curselection()
+        if curselection[0] < self.listbox.size() - 1:
+            self.listbox.selection_clear(curselection[0])
+            self.listbox.selection_set(curselection[0] + 1)
+            self.listbox.activate(curselection[0] + 1)
 
-        # Anchor to the menu's left edge; vertical center on the widget
-        menu_rect = menu.get_rect()  # no kwargs on Menu.get_rect()
-        widget_rect = widget.get_rect(to_absolute_position=True)
+    def _activate_selected(self, event=None):
+        sel = self.listbox.curselection()
+        if not sel:
+            return
+        index = sel[0]
+        label = self.listbox.get(index)
+        value = self._current_node.get(label)
+    
 
-        x = menu_rect.left + self.left_padding
-        y = widget_rect.centery - row_h // 2
+        # Case 1: submenu (dict)
+        if isinstance(value, dict):
+            self.stack.append((self._current_title, self._current_node))
+            self.show_node(label, value)
+            return
 
-        rect = pygame.Rect(x, y, row_w, row_h)
+        # Case 2: special commands
+        if label.lower() == 'quit':
+            self.root.destroy()
+            return
 
-        # Respect RGBA fills by using an alpha surface when needed
-        if self.fill is not None:
-            pygame.draw.rect(surface, self.fill, rect)
+        # Case 3: callable action
+        if callable(value):
+            try:
+                value()
+            except Exception as e:
+                messagebox.showerror('Error', str(e))
+            return
+
+        # Case 4: placeholder
+        messagebox.showinfo('Coming Soon', f'"{label}" is not implemented yet.')
