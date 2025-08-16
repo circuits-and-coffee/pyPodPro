@@ -53,7 +53,10 @@ def discover_jellyfin_servers(timeout=3.0, retries=2, verify=True) -> List[Jelly
         if not loc: 
             continue
         base = _base_from_location(loc)
-        hits.append(JellyfinServer(base_url=base, from_addr=addr, location_url=loc))
+        # print(f"any(hit.location_url == base for hit in hits) returns {any(hit.base_url == base for hit in hits)}")
+        if not any(hit.base_url == base for hit in hits):
+            # print(f"Couldn't find {base}, adding it!")
+            hits.append(JellyfinServer(base_url=base, from_addr=addr, location_url=loc))
     sock.close()
 
     if verify:
