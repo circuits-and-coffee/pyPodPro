@@ -13,6 +13,30 @@ class TkPodMenuApp:
         self.root = root
         self.structure = structure
         self.stack = []  # list[(title, node_dict)] for back navigation
+        self.ctx = {
+            "states": {
+                "current_page": str,
+                "previous_page": None,
+                "preferences": {
+                    "theme": "light",
+                    "brightness": 100,
+                    "language": "en",
+                    "volume": 50,
+                    "shuffle": False,
+                    "repeat": False 
+                }
+            },
+            "playback": {
+                "is_playing": False,
+                "current_track": None,
+                "track_position": 0
+            },
+            "actions": {
+                "QUIT": self.root.destroy,
+                "OPEN_JELLYFIN_CONNECT": None
+            }
+        }
+        
 
         # Window
         self.root.title(window_title)
@@ -123,18 +147,11 @@ class TkPodMenuApp:
             self.show_node(label, value)
             return
 
-        # Case 2: special commands
-        if label.lower() == 'quit':
-            self.root.destroy()
-            return
-
-        # Case 3: callable action
-        if callable(value):
+        # Case 2: Context-aware callable
+        if isinstance(value, str):
             try:
-                value()
+                self.ctx['actions'][value]()
             except Exception as e:
+                # Throws that TkPodMenuApp has no attribute 'Quit', need to debug
                 messagebox.showerror('Error', str(e))
             return
-
-        # Case 4: placeholder
-        messagebox.showinfo('Coming Soon', f'"{label}" is not implemented yet.')

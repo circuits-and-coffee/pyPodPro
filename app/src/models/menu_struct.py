@@ -12,9 +12,9 @@ MENU_STRUCTURE = {
     'Photos': None,
     'Settings': {
         'Jellyfin': {
-            'Find and Connect': None
+            'Find and Connect': "FIND_JELLYFIN_CONNECT"
         },
     },
     'Shuffle Songs': None,
-    'Quit': None
+    'Quit': "QUIT"
 }
