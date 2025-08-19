@@ -63,7 +63,7 @@
     "visible_layers": "fffffff_ffffffff"
   },
   "meta": {
-    "filename": "rpi-cm4-base-carrier.kicad_prl",
+    "filename": "rpi-cm4-demo-carrier.kicad_prl",
     "version": 2
   },
   "project": {

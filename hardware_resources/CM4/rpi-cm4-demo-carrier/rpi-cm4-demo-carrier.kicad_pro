@@ -315,7 +315,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "rpi-cm4-base-carrier.kicad_pro",
+    "filename": "rpi-cm4-demo-carrier.kicad_pro",
     "version": 1
   },
   "net_settings": {

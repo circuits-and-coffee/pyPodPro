@@ -17,7 +17,7 @@ Hopefully...
 
 ## How will you do this?
 Great question 😉 For now, I'm planning on using:
-- Python with pyGame for the UI
+- Python with tkinter for the UI
 - Armbian for the OS
 - PocketBeagle 2 or Raspberry Pi CM4 for the SBC
 - Some kind of daughterboard/cape to enable networking, expandable storage, and basically everything else.

@@ -9,4 +9,4 @@ https://www.armbian.com/pocketbeagle-2/
 
 ## CM4 Route
 https://www.youtube.com/watch?v=ypcPJC_umPQ
-https://github.com/ShawnHymel/rpi-cm4-base-carrier
+https://github.com/ShawnHymel/rpi-cm4-demo-carrier

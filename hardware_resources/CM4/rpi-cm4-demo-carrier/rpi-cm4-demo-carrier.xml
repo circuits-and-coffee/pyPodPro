@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>C:\Users\sgmustadio\Documents\GitHub\rpi-cm4-base-carrier\hardware\rpi-cm4-base-carrier\rpi-cm4-base-carrier.kicad_sch</source>
+    <source>C:\Users\sgmustadio\Documents\GitHub\rpi-cm4-demo-carrier\hardware\rpi-cm4-demo-carrier\rpi-cm4-demo-carrier.kicad_sch</source>
     <date>11/13/20 09:37:14</date>
     <tool>Eeschema (5.99.0-6900-ga9be08e1ce)</tool>
     <sheet number="1" name="/" tstamps="/">
@@ -10,7 +10,7 @@
         <company/>
         <rev>v01</rev>
         <date>2020-10-31</date>
-        <source>rpi-cm4-base-carrier.kicad_sch</source>
+        <source>rpi-cm4-demo-carrier.kicad_sch</source>
         <comment number="1" value=""/>
         <comment number="2" value="creativecommons.org/licenses/by-sa/4.0/"/>
         <comment number="3" value="License: CC BY-SA 4.0"/>
@@ -805,7 +805,7 @@
   </libparts>
   <libraries>
     <library logical="2020-11-06_22-01-36">
-      <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-base-carrier/hardware/libraries/2020-11-06_22-01-36/2020-11-06_22-01-36.lib</uri>
+      <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-demo-carrier/hardware/libraries/2020-11-06_22-01-36/2020-11-06_22-01-36.lib</uri>
     </library>
     <library logical="CM4IO">
       <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-carrier-template/hardware/libraries/CM4IO/CM4IO.kicad_sym</uri>
@@ -826,10 +826,10 @@
       <uri>C:\Program Files\KiCad\share\kicad\library/Power_Protection.kicad_sym</uri>
     </library>
     <library logical="SM04B-SRSS-TB_LF__SN_">
-      <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-base-carrier/hardware/libraries/SM04B-SRSS-TB_LF__SN_/SM04B-SRSS-TB_LF__SN_.lib</uri>
+      <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-demo-carrier/hardware/libraries/SM04B-SRSS-TB_LF__SN_/SM04B-SRSS-TB_LF__SN_.lib</uri>
     </library>
     <library logical="USB4105-GF-A">
-      <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-base-carrier/hardware/libraries/USB4105-GF-A/USB4105-GF-A.lib</uri>
+      <uri>C:/Users/sgmustadio/Documents/GitHub/rpi-cm4-demo-carrier/hardware/libraries/USB4105-GF-A/USB4105-GF-A.lib</uri>
     </library>
   </libraries>
   <nets>

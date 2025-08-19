@@ -9,7 +9,7 @@
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "rpi-cm4-base-carrier",
+      "Name": "rpi-cm4-demo-carrier",
       "GUID": "7270692d-636d-4342-9d62-6173652d6361",
       "Revision": "v01"
     },
@@ -34,47 +34,47 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "rpi-cm4-base-carrier-F_Cu.gtl",
+      "Path": "rpi-cm4-demo-carrier-F_Cu.gtl",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rpi-cm4-base-carrier-B_Cu.gbl",
+      "Path": "rpi-cm4-demo-carrier-B_Cu.gbl",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rpi-cm4-base-carrier-F_Paste.gtp",
+      "Path": "rpi-cm4-demo-carrier-F_Paste.gtp",
       "FileFunction": "SolderPaste,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rpi-cm4-base-carrier-B_Paste.gbp",
+      "Path": "rpi-cm4-demo-carrier-B_Paste.gbp",
       "FileFunction": "SolderPaste,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rpi-cm4-base-carrier-F_Silkscreen.gto",
+      "Path": "rpi-cm4-demo-carrier-F_Silkscreen.gto",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rpi-cm4-base-carrier-B_Silkscreen.gbo",
+      "Path": "rpi-cm4-demo-carrier-B_Silkscreen.gbo",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rpi-cm4-base-carrier-F_Mask.gts",
+      "Path": "rpi-cm4-demo-carrier-F_Mask.gts",
       "FileFunction": "SolderMask,Top",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "rpi-cm4-base-carrier-B_Mask.gbs",
+      "Path": "rpi-cm4-demo-carrier-B_Mask.gbs",
       "FileFunction": "SolderMask,Bot",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "rpi-cm4-base-carrier-Edge_Cuts.gm1",
+      "Path": "rpi-cm4-demo-carrier-Edge_Cuts.gm1",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }
