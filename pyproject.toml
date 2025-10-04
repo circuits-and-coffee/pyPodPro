@@ -5,13 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "jellyfin-apiclient-python>=1.11.0"
-    "pyside6"
-]
-[tool.pyside6-project]
-files = [
-    "main.py",
-    "ui/main_window.ui",
-    "ui/menu_element.ui",
-    "ui/now_playing.ui"
+    "jellyfin-apiclient-python>=1.11.0",
+    "pygame-ce>=2.5.5",
+    "pygame-menu>=4.5.2",
 ]

@@ -1,5 +1,5 @@
 import argparse, json
-from app.src.services.discovery import discover_jellyfin_servers
+from services.discovery import discover_jellyfin_servers
 
 def main():
     ap = argparse.ArgumentParser()
