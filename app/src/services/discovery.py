@@ -1,6 +1,6 @@
 import socket, time, json, urllib.request, urllib.parse
 from typing import List
-from models.server import JellyfinServer
+from app.src.models.server import JellyfinServer
 
 SSDP_ADDR = ("239.255.255.250", 1900)
 MSEARCH = (
