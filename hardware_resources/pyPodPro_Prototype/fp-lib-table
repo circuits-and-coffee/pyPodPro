@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "pyPodPro")(type "KiCad")(uri "/Users/nate/Projects/pyPodPro/hardware_resources/footprints.pretty")(options "")(descr ""))
+)
