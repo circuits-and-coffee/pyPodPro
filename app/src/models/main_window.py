@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
 
         
         
-    # Populate the menu, depending on which level of MENU_STRUCTURE we're at
+    # Populate the menu, depending on which level of MENU_STRUCTURE we're at.
     def populate_menu(self, menu_page, action_triggered, menu_struct): # Takes the menu_page widget and the action_triggered function
         # I don't think I need menu_page anymore, since that's now self.menu_page?
         print(f"Populating menu with structure: {menu_struct or MENU_STRUCTURE}")
